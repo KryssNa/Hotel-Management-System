@@ -1,5 +1,6 @@
+import login
 
-from tkinter import messagebox
+from tkinter import font, messagebox
 from tkinter import *
 from PIL import Image, ImageTk
 import sqlite3
@@ -12,37 +13,181 @@ load=Image.open("67.png")
 render=ImageTk.PhotoImage(load)
 img=Label(root,image=render)
 img.place(x=0,y=0)
-#==============================frame==================================
-frame = Frame(root, bg="black")
-frame.place(x=400, y=140, width=620, height=450)
 
-# ===========================Varibales============================#
+# creating a database table
+try:
+    conn=sqlite3.connect('admins.db')
+    c=conn.cursor()
+    c.execute("""CREATE TABLE users(
+        fname text,
+        lname text,
+        email text PRIMARY KEY,
+        phone text,
+        password text,
+        cpass text,
+        status boolean
+    )""" )
+    conn.commit()
+    conn.close()
+except:
+    pass
 
-Get_started = Label(root, text="NEW REGISTRATION", font=("Montserrat SemiBold", 16, "bold"), fg="white",
-                    bg="black", borderwidth=0).place(x=605, y=190)
+#signup function
+def signup():
+    def openlogin():
+        root.destroy()
+        import login
+    
+    def remove(event):
+        a=fname_ent.get()
+        if a=="First Name":
+            fname_ent.delete(0, END)
 
-name  = Entry(root, font=("Arial", 12,), bg="white")
-name.place(x=630, y=250)
+    def remove1(event):
+        a=lname_ent.get()
+        if a=="Last Name":
+            lname_ent.delete(0, END)
+    
+    #show password functions for passwords
+    def show():
+        if (showw.get()==1):
+            password_ent.config(show='')
+        else:
+            password_ent.config(show='*')
 
-username  = Entry(root, font=("Arial", 12,), bg="white")
-username.place(x=630, y=300)
+    def show2():
+        if (showww.get()==1):
+            cpass_ent.config(show='')
+        else:
+            cpass_ent.config(show='*')
+    #==============================frame==================================
+    frame = Frame(root, bg="black")
+    frame.place(x=400, y=140, width=620, height=450)
 
-password  = Entry(root,show="*", font=("Arial", 12,), bg="white")
-password.place(x=630, y=350)
+    # ===========================Varibales============================#
 
-conpass = Entry(root,show="*",font=("Arial", 12,), bg="white")
-conpass.place(x=630, y=400)
+    Get_started = Label(root, text="NEW REGISTRATION", font=("Montserrat SemiBold", 16, "bold"), fg="white",
+                        bg="black", borderwidth=0).place(x=605, y=190)
 
-ran = Entry(root, text=2, font=("Arial", 12,), bg="white")
-ran.place(x=632, y=444)
+    fname_ent=Entry(root,font=("Arial", 11,), bg="white")
+    fname_ent.insert(0, 'First Name')
+    fname_ent.place(x=630, y=250, width=85,height=23)
+    fname_ent.bind('<FocusIn>', remove) #bind function is used to montior the movement of mouse
 
-l_name = Label(root, text="Name:", font=("Montserrat", 12), fg="white", bg="black").place(x=565,y=250)
-l_User = Label(root, text="Username:", font=("Montserrat", 12), fg="white", bg="black").place(x=535, y=300)
-l_Pass = Label(root, text="Password:", font=("Montserrat", 12), fg="white",bg="black").place(x=535, y=350)
-l_CPass= Label(root, text="Confirm Password:", font=("Montserrat", 12), fg="white",bg="black").place(x=470, y=400)
-l_id   = Label(root, text="ID Number:", font=("Montserrat", 12), fg="white", bg="black").place(x=525, y=440)
-log    = Button(root, text="Register", font=("Montserrat bold",11), bg="#5C4B90",width=14,height=1,fg="black", cursor="hand2", borderwidth=0, activeforeground="black", activebackground="black")
-log.place(x=655, y=492,width=135)
+    lname_ent=Entry(root,font=("Arial", 11,), bg="white")
+    lname_ent.insert(0, 'Last Name')
+    lname_ent.place(x=730, y=250, width=85,height=23)
+    lname_ent.bind('<FocusIn>', remove1)
+
+    email_ent = Entry(root, text=2, font=("Arial", 12,), bg="white")
+    email_ent.place(x=630, y=300)
+
+    phone_ent = Entry(root, font=("Arial", 12,), bg="white")
+    phone_ent.place(x=630, y=350)
+
+    password_ent  = Entry(root,show="*", font=("Arial", 12,), bg="white")
+    password_ent.place(x=630, y=400)
+    password_ent.bind('<FocusIn>')
+    showw=IntVar(value=1)
+    Checkbutton(text='Show',offvalue=0,variable=showw,bg='white',command=show).place(x=830,y=400) #show password checkbutton
+    
+    cpass_ent = Entry(root,show="*",font=("Arial", 12,), bg="white")
+    cpass_ent.place(x=630, y=444)
+    cpass_ent.bind('<FocusIn>')
+    showww=IntVar(value=1)
+    Checkbutton(text='Show',offvalue=0,variable=showww,bg='white',command=show2).place(x=830,y=444) #show password checkbutton
+
+    l_name = Label(root, text="Name:", font=("Montserrat", 12), fg="white", bg="black").place(x=565,y=250)
+    l_email = Label(root, text="Email:", font=("Montserrat", 12), fg="white", bg="black").place(x=565, y=300)
+    l_Pass = Label(root, text="Password:", font=("Montserrat", 12), fg="white",bg="black").place(x=535, y=400)
+    l_CPass= Label(root, text="Confirm Password:", font=("Montserrat", 12), fg="white",bg="black").place(x=475, y=440)
+    l_phone   = Label(root, text="Phone Number:", font=("Montserrat", 12), fg="white", bg="black").place(x=500, y=350)
+    
+       
+#verification function to check the validation of entered data
+    def verify():
+        a=fname_ent.get()
+        b=lname_ent.get()
+        c=email_ent.get()
+        d=phone_ent.get()
+        e=password_ent.get()
+        f=cpass_ent.get()
+
+        if (a=="" or a=="First Name") or (b=="" or b=="Last Name") or (c=="") or (d=="") or (e=="") or (f==""):
+            messagebox.showerror("Signup","One or More Fields Empty.")
+        elif "@" and ".com" not in c:
+            messagebox.showerror("Signup","Invalid Email")
+        elif len(e)<6 or len(f)<6:
+            messagebox.showerror("Signup","Password must be more than 6 characters")
+        elif len(d)!=10:
+            messagebox.showerror("Signup","Invalid Phone Number Length")
+        elif e!=f:
+            messagebox.showerror("Signup","Passwords Mismatch")
+        else:
+            try:
+                int(d)
+                sques()
+            except:
+                messagebox.showerror("Signup","Invalid Phone Number")
+
+
+    
+    def sques():
+        a=StringVar()
+        b=StringVar()
+        d=StringVar()
+
+        Frame(height=330,width=350,bg='white').place(x=775,y=210)
+        
+        Label(text="Security Questions",font=('Arial',16,'bold'),bg='white').place(x=847,y=210)
+
+        Label(text="Q1: What is your favourite food?",bg='white').place(x=805,y=255)
+        Entry(root, textvariable=a).place(x=805, y=280, width=290, height=30)
+        
+        Label(text="Q2: What is the name of your first pet?",bg='white').place(x=805,y=330)
+        Entry(root, textvariable=b).place(x=805, y=350, width=290, height=30)
+
+        Label(text="Q3: What is the name of your childhood best friend?",bg='white').place(x=805,y=400)
+        Entry(root,textvariable=d).place(x=805, y=420, width=290, height=30)
+
+        #verification for security questions
+        def verify2():
+            aa=a.get()
+            bb=b.get()
+            cc=d.get()
+
+            if aa=="" or bb=="" or cc=="":
+                messagebox.showerror("Security Questions","One or more fields empty")
+            else:
+                submit()
+ 
+        def submit():
+            conn=sqlite3.connect('admins.db')
+            c=conn.cursor()
+            c.execute("INSERT INTO users VALUES (:fname_ent, :lname_ent, :email_ent, :phone_ent, :password_ent, :cpass_ent, :status)",
+            {
+                'fname_ent':fname_ent.get(),
+                'lname_ent':lname_ent.get(),
+                'email_ent':email_ent.get(),
+                'phone_ent':phone_ent.get(),
+                'password_ent':password_ent.get(),
+                'cpass_ent':cpass_ent.get(),
+                'status':False
+                })
+            conn.commit()
+            conn.close()
+            
+            messagebox.showinfo("Signup","User Registered Successfully")
+
+            openlogin()
+            
+        Button(root,text="Register", font=("Montserrat bold",11), bg="#5C4B90",width=14,height=1,fg="black",command=verify2,
+                cursor="hand2", borderwidth=0, activeforeground="black", activebackground="black").place(x=805, y=442,width=135)
+    Button(root,text="Register", font=("Montserrat bold",11), bg="#5C4B90",width=14,height=1,fg="black",command=verify,
+                cursor="hand2", borderwidth=0, activeforeground="black", activebackground="black").place(x=655, y=492,width=135)
+          
+        
+signup()
 
 root.mainloop()
 
