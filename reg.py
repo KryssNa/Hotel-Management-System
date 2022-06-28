@@ -25,6 +25,9 @@ try:
         phone text,
         password text,
         cpass text,
+        q1 text,
+        q2 text,
+        q3 text,
         status boolean
     )""" )
     conn.commit()
@@ -164,7 +167,7 @@ def signup():
         def submit():
             conn=sqlite3.connect('admins.db')
             c=conn.cursor()
-            c.execute("INSERT INTO users VALUES (:fname_ent, :lname_ent, :email_ent, :phone_ent, :password_ent, :cpass_ent, :status)",
+            c.execute("INSERT INTO users VALUES (:fname_ent, :lname_ent, :email_ent, :phone_ent, :password_ent, :cpass_ent,:q1,:q2,:q3,:status)",
             {
                 'fname_ent':fname_ent.get(),
                 'lname_ent':lname_ent.get(),
@@ -172,6 +175,9 @@ def signup():
                 'phone_ent':phone_ent.get(),
                 'password_ent':password_ent.get(),
                 'cpass_ent':cpass_ent.get(),
+                'q1':a.get(),
+                'q2':b.get(),
+                'q3':d.get(),
                 'status':False
                 })
             conn.commit()
