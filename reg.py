@@ -1,4 +1,3 @@
-import login
 
 from tkinter import font, messagebox
 from tkinter import *
@@ -34,6 +33,11 @@ try:
     conn.close()
 except:
     pass
+
+##bring back to login
+def backlogin():
+    import login
+
 
 #signup function
 def signup():
@@ -190,9 +194,11 @@ def signup():
         Button(root,text="Register", font=("Montserrat bold",11), bg="#5C4B90",width=14,height=1,fg="black",command=verify2,
                 cursor="hand2", borderwidth=0, activeforeground="black", activebackground="black").place(x=805, y=442,width=135)
     Button(root,text="Register", font=("Montserrat bold",11), bg="#5C4B90",width=14,height=1,fg="black",command=verify,
-                cursor="hand2", borderwidth=0, activeforeground="black", activebackground="black").place(x=655, y=492,width=135)
-          
-        
+                cursor="hand2", borderwidth=0, activeforeground="black", activebackground="black").place(x=685, y=492,width=135)
+    
+    Button(root,text="Back LogIN", font=("Montserrat bold",11), bg="#5C4B90",width=14,height=1,fg="black",command=backlogin,
+                cursor="hand2", borderwidth=0, activeforeground="black", activebackground="black").place(x=565, y=492,width=105)
+    
 signup()
 
 root.mainloop()
