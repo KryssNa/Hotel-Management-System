@@ -4,13 +4,13 @@ from tkinter import *
 from PIL import Image, ImageTk
 import sqlite3
 
-root=Tk()
+window=Tk()
 
-root.title("New Registration")
-root.geometry('1550x800+0+0')
+window.title("New Registration")
+window.geometry('1550x800+0+0')
 load=Image.open("67.png")
 render=ImageTk.PhotoImage(load)
-img=Label(root,image=render)
+img=Label(window,image=render)
 img.place(x=0,y=0)
 
 # creating a database table
@@ -42,7 +42,7 @@ def backlogin():
 #signup function
 def signup():
     def openlogin():
-        root.destroy()
+        window.destroy()
         import login
     
     def remove(event):
@@ -68,47 +68,47 @@ def signup():
         else:
             cpass_ent.config(show='*')
     #==============================frame==================================
-    frame = Frame(root, bg="black")
+    frame = Frame(window, bg="black")
     frame.place(x=400, y=140, width=620, height=450)
 
     # ===========================Varibales============================#
 
-    Get_started = Label(root, text="NEW REGISTRATION", font=("Montserrat SemiBold", 16, "bold"), fg="white",
+    Get_started = Label(window, text="NEW REGISTRATION", font=("Montserrat SemiBold", 16, "bold"), fg="white",
                         bg="black", borderwidth=0).place(x=605, y=190)
 
-    fname_ent=Entry(root,font=("Arial", 11,), bg="white")
+    fname_ent=Entry(window,font=("Arial", 11,), bg="white")
     fname_ent.insert(0, 'First Name')
     fname_ent.place(x=630, y=250, width=85,height=23)
     fname_ent.bind('<FocusIn>', remove) #bind function is used to montior the movement of mouse
 
-    lname_ent=Entry(root,font=("Arial", 11,), bg="white")
+    lname_ent=Entry(window,font=("Arial", 11,), bg="white")
     lname_ent.insert(0, 'Last Name')
     lname_ent.place(x=730, y=250, width=85,height=23)
     lname_ent.bind('<FocusIn>', remove1)
 
-    email_ent = Entry(root, text=2, font=("Arial", 12,), bg="white")
+    email_ent = Entry(window, text=2, font=("Arial", 12,), bg="white")
     email_ent.place(x=630, y=300)
 
-    phone_ent = Entry(root, font=("Arial", 12,), bg="white")
+    phone_ent = Entry(window, font=("Arial", 12,), bg="white")
     phone_ent.place(x=630, y=350)
 
-    password_ent  = Entry(root,show="*", font=("Arial", 12,), bg="white")
+    password_ent  = Entry(window,show="*", font=("Arial", 12,), bg="white")
     password_ent.place(x=630, y=400)
     password_ent.bind('<FocusIn>')
     showw=IntVar(value=1)
     Checkbutton(text='Show',offvalue=0,variable=showw,bg='white',command=show).place(x=830,y=400) #show password checkbutton
     
-    cpass_ent = Entry(root,show="*",font=("Arial", 12,), bg="white")
+    cpass_ent = Entry(window,show="*",font=("Arial", 12,), bg="white")
     cpass_ent.place(x=630, y=444)
     cpass_ent.bind('<FocusIn>')
     showww=IntVar(value=1)
     Checkbutton(text='Show',offvalue=0,variable=showww,bg='white',command=show2).place(x=830,y=444) #show password checkbutton
 
-    l_name = Label(root, text="Name:", font=("Montserrat", 12), fg="white", bg="black").place(x=565,y=250)
-    l_email = Label(root, text="Email:", font=("Montserrat", 12), fg="white", bg="black").place(x=565, y=300)
-    l_Pass = Label(root, text="Password:", font=("Montserrat", 12), fg="white",bg="black").place(x=535, y=400)
-    l_CPass= Label(root, text="Confirm Password:", font=("Montserrat", 12), fg="white",bg="black").place(x=475, y=440)
-    l_phone   = Label(root, text="Phone Number:", font=("Montserrat", 12), fg="white", bg="black").place(x=500, y=350)
+    l_name = Label(window, text="Name:", font=("Montserrat", 12), fg="white", bg="black").place(x=565,y=250)
+    l_email = Label(window, text="Email:", font=("Montserrat", 12), fg="white", bg="black").place(x=565, y=300)
+    l_Pass = Label(window, text="Password:", font=("Montserrat", 12), fg="white",bg="black").place(x=535, y=400)
+    l_CPass= Label(window, text="Confirm Password:", font=("Montserrat", 12), fg="white",bg="black").place(x=475, y=440)
+    l_phone   = Label(window, text="Phone Number:", font=("Montserrat", 12), fg="white", bg="black").place(x=500, y=350)
     
        
 #verification function to check the validation of entered data
@@ -149,13 +149,13 @@ def signup():
         Label(text="Security Questions",font=('Arial',16,'bold'),bg='white').place(x=847,y=210)
 
         Label(text="Q1: What is your favourite food?",bg='white').place(x=805,y=255)
-        Entry(root, textvariable=a).place(x=805, y=280, width=290, height=30)
+        Entry(window, textvariable=a).place(x=805, y=280, width=290, height=30)
         
         Label(text="Q2: What is the name of your first pet?",bg='white').place(x=805,y=330)
-        Entry(root, textvariable=b).place(x=805, y=350, width=290, height=30)
+        Entry(window, textvariable=b).place(x=805, y=350, width=290, height=30)
 
         Label(text="Q3: What is the name of your childhood best friend?",bg='white').place(x=805,y=400)
-        Entry(root,textvariable=d).place(x=805, y=420, width=290, height=30)
+        Entry(window,textvariable=d).place(x=805, y=420, width=290, height=30)
 
         #verification for security questions
         def verify2():
@@ -191,16 +191,16 @@ def signup():
 
             openlogin()
             
-        Button(root,text="Register", font=("Montserrat bold",11), bg="#5C4B90",width=14,height=1,fg="black",command=verify2,
+        Button(window,text="Register", font=("Montserrat bold",11), bg="#5C4B90",width=14,height=1,fg="black",command=verify2,
                 cursor="hand2", borderwidth=0, activeforeground="black", activebackground="black").place(x=805, y=442,width=135)
-    Button(root,text="Register", font=("Montserrat bold",11), bg="#5C4B90",width=14,height=1,fg="black",command=verify,
+    Button(window,text="Register", font=("Montserrat bold",11), bg="#5C4B90",width=14,height=1,fg="black",command=verify,
                 cursor="hand2", borderwidth=0, activeforeground="black", activebackground="black").place(x=685, y=492,width=135)
     
-    Button(root,text="Back LogIN", font=("Montserrat bold",11), bg="#5C4B90",width=14,height=1,fg="black",command=backlogin,
+    Button(window,text="Back LogIN", font=("Montserrat bold",11), bg="#5C4B90",width=14,height=1,fg="black",command=backlogin,
                 cursor="hand2", borderwidth=0, activeforeground="black", activebackground="black").place(x=565, y=492,width=105)
     
 signup()
 
-root.mainloop()
+window.mainloop()
 
 
