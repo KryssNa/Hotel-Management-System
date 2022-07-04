@@ -3,7 +3,7 @@ from tkinter import *
 from PIL import Image, ImageTk
 import sqlite3
 import random
-import origin
+
 
 root=Tk()
 root.title("Hotel Management System")
@@ -25,14 +25,18 @@ def login():
     def openstatus():
         root.destroy()
         def logout():
-            messagebox.askyesno("logout","are you sure you want to log out")
-            root4.destroy()
+            y=messagebox.askyesno("logout","are you sure you want to log out")
+            if y==YES:
+               root4.destroy()
+            else:
+                pass
+               
         root4=Tk()
         root4.title('WELCOME TO HOTEL MANGEMENT SYSTEM')
         root4.geometry("1550x800+0+0")
         global load,img
         load=Image.open("67.png")
-        load=load.resize((1350,720),Image.ANTIALIAS)
+        load=load.resize(1350,720)
         render=ImageTk.PhotoImage(load)
         img=Label(root4,image=render)
         img.place(x=0,y=0)
