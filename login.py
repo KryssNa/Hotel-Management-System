@@ -4,13 +4,13 @@ from PIL import Image, ImageTk
 import sqlite3
 import random
 
-
+#window title 
 root=Tk()
 root.title("Hotel Management System")
 root.geometry("1440x1024")
-image1=Image.open("67.png")
 
 #background image
+image1=Image.open("67.png")
 photo=ImageTk.PhotoImage(image1)
 image_label=Label(image=photo)
 image_label.pack()
@@ -21,40 +21,51 @@ def login():
     def opensignup():
         root.destroy()
         import reg
-    #krishna.kryss@gmail.com
+    
+    ##main window
     def openstatus():
         root.destroy()
-        def logout():
-            y=messagebox.askyesno("logout","are you sure you want to log out")
-            if y==YES:
-               root4.destroy()
-            else:
-                pass
-               
         root4=Tk()
         root4.title('WELCOME TO HOTEL MANGEMENT SYSTEM')
         root4.geometry("1550x800+0+0")
         global load,img
         load=Image.open("67.png")
-        load=load.resize(1350,720)
         render=ImageTk.PhotoImage(load)
         img=Label(root4,image=render)
         img.place(x=0,y=0)
+        
+        #logout function
+        def logout():
+            y=messagebox.askyesno("logout","are you sure you want to log out")
+            if y==YES:
+                root4.destroy()
+            else:
+                pass
+        
+        ##import customer dashboard
+        def cust_dash():
+            root4.destroy()
+            import customer_dash
+        
+        ##import booking dashboard
+        def book_dash():
+            root4.destroy()
+            import book_dash
+        
+        ##import 
+         
+        ##main window button
         logout_1=Button(root4,text="LOG OUT",font=('Consolas',12,"bold"),bg="#39065D",border=0,fg="white",cursor="hand2",activebackground="#39065D",activeforeground="#39065D",command=logout).place(x=1225,y=43)
-        custmor=Button(root4,text="CUSTOMERS",font=('Consolas',12,"bold"),bg="#39065D",border=0,fg="white",cursor="hand2",activebackground="#39065D",activeforeground="#39065D").place(x=350,y=100)
-        booking=Button(root4,text="BOOKING",font=('Consolas',12,"bold"),bg="#39065D",border=0,fg="white",cursor="hand2",activebackground="#39065D",activeforeground="#39065D").place(x=520,y=100)
-        #room=Button(root4,text="CUSTOMER BILLING DASHBOARD",font=('Consolas',12,"bold"),bg="#39065D",border=0,fg="white",cursor="hand2",activebackground="#39065D",activeforeground="#39065D").place(x=650,y=100)
+        custmor=Button(root4,text="CUSTOMERS",font=('Consolas',12,"bold"),bg="#39065D",border=0,fg="white",cursor="hand2",activebackground="#39065D",activeforeground="#39065D",command=cust_dash).place(x=350,y=100)
+        booking=Button(root4,text="BOOKING",font=('Consolas',12,"bold"),bg="#39065D",border=0,fg="white",cursor="hand2",activebackground="#39065D",activeforeground="#39065D",command=book_dash).place(x=520,y=100)
+        # room=Button(root4,text="CUSTOMER BILLING DASHBOARD",font=('Consolas',12,"bold"),bg="#39065D",border=0,fg="white",cursor="hand2",activebackground="#39065D",activeforeground="#39065D").place(x=650,y=100)
         contact=Button(root4,text="REPORT AN ISSUE",font=('Consolas',12,"bold"),bg="#39065D",border=0,fg="white",cursor="hand2",activebackground="#39065D",activeforeground="#39065D").place(x=830,y=100)
         payment=Button(root4,text="FOOD ITEMS",font=('Consolas',12,"bold"),bg="#39065D",border=0,fg="white",cursor="hand2",activebackground="#39065D",activeforeground="#39065D").place(x=650,y=100)
-
         root4.mainloop()
         
-        # import Room_Status
-
     # #login frame
     myframe=Frame(root,height=350,width=300,bg="black",pady=20,padx=35)
     myframe.place(x=505,y=110)
-    
     
     #authorization check
     def check():
@@ -87,7 +98,7 @@ def login():
                     {
                         'val':True,
                         'a':a
-                    })
+                               })
                     conn.commit()
                     messagebox.showinfo("Login","Logged in Successfully")
                     openstatus()
@@ -96,8 +107,7 @@ def login():
             conn.close()
         except:
             messagebox.showerror("Login","Sign Up First")
-
-    
+  
     #Tkinter does not support placeholders for entry so following two functions removes the default inserted text once the focus is on the entry box
     def remove(event):
         a=email_ent.get()
@@ -107,19 +117,19 @@ def login():
     def remove2(event):
         b=password_ent.get()  
         if b=='Enter Your Password': 
-            password_ent.delete(0, END)
-    
+            password_ent.delete(0, END)  
 
-#for username &password, entry widget and submit button
-
+    #label get started
     l_getstarted=Label(myframe,text="Get started",font=("Montserrat SemiBold", 15, "bold"),fg="white",bg="black")
     l_getstarted.place(x=50,y=0)
 
+    #email label and entry
     l_email=Label(myframe,text="Email",fg="white",bg="black",font=("Montserrat light", 11, "bold"))
     l_email.place(x=10,y=40)
     email_ent=Entry(myframe,font=("Regular", 12,))
     email_ent.place(x=10,y=65,height=25,width=185)
 
+    #password label and entry
     l_pass=Label(myframe,text="Password",fg="white",bg="black",font=("Montserrat light", 11, "bold"))
     l_pass.place(x=10,y=100)
     password_ent=Entry(myframe,font=("Regular", 12,))
@@ -148,7 +158,7 @@ def login():
                             borderwidth=0, cursor="hand2",command=reset)
     For_got.place(x=0, y=285)
 
-     #verification check
+    #verification check
     def verify():
         a=email_ent.get()
         b=password_ent.get()
@@ -293,6 +303,5 @@ def reset():
                 messagebox.showerror("Password Reset","Passwords Mismatch")
             else:
                 update()
-login()
-    
+login()    
 root.mainloop()
