@@ -40,6 +40,10 @@ def cust_win():
     x=random.randint(1,100)
     txtid.set(str(x))
 
+    def mainpage():
+        root5.destroy()
+        import main
+
     def add_data2():
         if  txtname.get()=="" or txtid.get()=="":
             messagebox.showerror("Error","All field are required")
@@ -216,6 +220,9 @@ def cust_win():
     search =Button(root5, text="SEARCH",command=search_my2,font=("Consolas", 13, "bold"), fg="black", bg="#FFA726", borderwidth=0,border=0,cursor="hand2",activebackground="black",activeforeground='black').place(x=1000, y=155,width=80)
     delete =Button(root5, text="DELETE",command=del_1,font=("Consolas", 13, "bold"), fg="black", bg="#FFA726", borderwidth=0,border=0,cursor="hand2",activebackground="black",activeforeground='black').place(x=355, y=500,width=100)
     showall =Button(root5, text="REFRESH LIST",command=fetch_data2,font=("Consolas", 13, "bold"), fg="black", bg="#FFA726", borderwidth=0,border=0,cursor="hand2",activebackground="black",activeforeground='black').place(x=1100, y=155,width=115)
+    
+    Button(root5,text="back",width=3,command=mainpage).place(x=0,y=2)
+    
     root5.mainloop()
     
 cust_win()

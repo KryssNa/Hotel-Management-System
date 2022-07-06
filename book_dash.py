@@ -36,11 +36,13 @@ try:
        contact text
         )""")
     conn.commit()
-    conn.close()
-    
+    conn.close()   
 except:
     pass
 
+def mainpage():
+    root6.destroy()
+    import main
 
 
 def add_data1():
@@ -327,6 +329,8 @@ Bill  =Button(root6, text="BILL",command=days_check,font=("Consolas", 13, "bold"
 showall =Button(root6, text="REFRESH LIST",command=fetch,font=("Consolas", 13, "bold"), fg="black", bg="#FFA726", borderwidth=0,border=0,cursor="hand2",activebackground="black",activeforeground='black').place(x=1100, y=300,width=115)
 fetch_data =Button(root6, text="FETCH DATA",command=fetch_dataa,font=("Consolas", 11, "bold"), fg="black", bg="#FFA726", borderwidth=0,border=0,cursor="hand2",activebackground="black",activeforeground='black').place(x=450, y=140,width=100)
 email=Button(root6, text="Email Details",command=Emails,font=("Consolas", 10, "bold"), fg="black", bg="#FFA726", borderwidth=0,border=0,cursor="hand2",activebackground="#FFA726",activeforeground='#FFA726').place(x=520, y=305,width=110)
+
+Button(root6,text="back",width=3,command=mainpage).place(x=0,y=2)
 
 root6.mainloop()
 
