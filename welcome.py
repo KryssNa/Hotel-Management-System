@@ -74,4 +74,4 @@ for file in menu_file_list:
             name = line[:line.rfind(" ")]
             print(name)
             price = line[line.rfind(" ")+1:-3]
-            print(price)
+            print(price)Z
