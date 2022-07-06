@@ -36,6 +36,7 @@ except:
 
 ##bring back to login
 def backlogin():
+    window.destroy()
     import login
 
 
