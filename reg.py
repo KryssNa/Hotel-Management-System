@@ -1,4 +1,4 @@
-
+##
 from tkinter import font, messagebox
 from tkinter import *
 from PIL import Image, ImageTk
@@ -149,13 +149,13 @@ def signup():
         
         Label(text="Security Questions",font=('Arial',16,'bold'),bg='white').place(x=847,y=210)
 
-        Label(text="Q1: What is your favourite food?",bg='white').place(x=805,y=255)
+        Label(text="Q1: What is your favourite destination?",bg='white').place(x=805,y=255)
         Entry(window, textvariable=a).place(x=805, y=280, width=290, height=30)
         
-        Label(text="Q2: What is the name of your first pet?",bg='white').place(x=805,y=330)
+        Label(text="Q2: What is the name of your first teacher name?",bg='white').place(x=805,y=330)
         Entry(window, textvariable=b).place(x=805, y=350, width=290, height=30)
 
-        Label(text="Q3: What is the name of your childhood best friend?",bg='white').place(x=805,y=400)
+        Label(text="Q3: What is the name of your favourite idol?",bg='white').place(x=805,y=400)
         Entry(window,textvariable=d).place(x=805, y=420, width=290, height=30)
 
         #verification for security questions

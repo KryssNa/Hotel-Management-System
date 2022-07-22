@@ -7,7 +7,7 @@ import random
 #window title 
 root=Tk()
 root.title("Hotel Management System")
-root.geometry("1440x1024")
+root.geometry("1550x850")
 
 #background image
 image1=Image.open("67.png")
@@ -133,7 +133,7 @@ def login():
         elif "@" and ".com" not in a:
             messagebox.showerror("Password Reset","Invalid Email")
         elif len(b)<6:
-            messagebox.showerror("Password Reset","Password must be more than 6 characters")
+            messagebox.showerror("Password Reset","Invalid Password")
         else:
             check()
     
@@ -146,7 +146,9 @@ def reset():
 
     #creating a toplevel
     top=Toplevel()
-    top.geometry('380x350')
+    # top.geometry('380x350')
+    top.maxsize(height=450,width=450)
+    top.minsize(height=450,width=450)
     top.title('Forgot Password')
 
     Frame(top,bg='#b4cef3',height=400,width=400).place(x=0,y=0)
@@ -189,9 +191,9 @@ def reset():
 
     #security questions
     ans1=StringVar()
-    a="Q1: What is your favourite food?"
-    b="Q2: What is the name of your first pet?"
-    c="Q3: What is the name of your childhood best friend?"
+    a="Q1: What is your favourite destination?"
+    b="Q2: What is the name of your first teacher name?"
+    c="Q3: What is the name of your favourite idol?"
     lst=[a,b,c]
     ques=random.choice(lst)
     num=int(ques[1])-1

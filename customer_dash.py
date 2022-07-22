@@ -32,7 +32,7 @@ def cust_win():
     root5=Tk()
     root5.title("CUSTOMER Dashboard")
     root5.geometry('1550x800+0+0')
-    root5.configure(bg="#39065D")
+    root5.configure(bg="#501F1F")
     # bg = PhotoImage(file="77.png")
     # lbl_2= Label(root5, image=bg)
     # lbl_2.place(x=0, y=0)  
@@ -53,13 +53,13 @@ def cust_win():
                 c=conn.cursor()
                 # print("yes")
                 c.execute("INSERT INTO customers values(:cust_id,:name,:mobile,:gender,:email,:nationality)",
-                          {"cust_id":txtid.get(),
-                           "name":txtname.get(),
-                           "mobile":txtphone.get(),
-                           "gender":txtgender.get(),
-                           "email":txtemail.get(),
-                           "nationality":txtnationality.get()
-                           })
+                        {"cust_id":txtid.get(),
+                        "name":txtname.get(),
+                        "mobile":txtphone.get(),
+                        "gender":txtgender.get(),
+                        "email":txtemail.get(),
+                        "nationality":txtnationality.get()
+                        })
             
                 conn.commit()
                 fetch_data2()
@@ -97,16 +97,14 @@ def cust_win():
             details_1.delete(*details_1.get_children())
             for i in row_2:
                 details_1.insert("",END,values=i)
-            conn.commit()
+        conn.commit()
         conn.close()
 
     def del_1():
         del_my=messagebox.askyesno("Hotel Mangement system","Do you want to delete this Entry!")
-        if del_my>0:
+        if del_my==YES:
             conn= sqlite3.connect("customer.db")
             c=conn.cursor()
-            # query="DELETE FROM customers WHERE cust_id=%s"
-            # value=(txtid.get())
             c.execute("DELETE FROM customers WHERE cust_id="+txtid.get())
         else:
             if not del_my:
@@ -155,13 +153,43 @@ def cust_win():
             else:
                 pass
 
+    #logout function
+    def logout():
+        y=tmsg.askyesno("LogOut","Are you sure you want to Log Out")
+        if y==YES:
+            root5.destroy()
+            import login
+        else:
+            pass
+
+    ##import customer dashboard
+    def cust_dash():
+        tmsg.showinfo("Error","Already on Customer Dashboard")
+
+    ##import booking dashboard
+    def book_dash():
+        root5.destroy()
+        import book_dash
+
+    ##import billdash
+    def bill_dash():
+        root5.destroy()
+        import bill_win
+        
+    ##head to main window
+    def main():
+        root5.destroy()
+        import main
+
+
+
+
     txtname=StringVar()
     txtgender=StringVar()
     txtphone=StringVar()
     txtnationality=StringVar()
     txtemail=StringVar()
 
-    
 #====================================================== Frame ======================================================#        
     frame=Frame(root5,bg="white")
     frame.place(x=550,y=200,width=750,height=360)
@@ -183,8 +211,12 @@ def cust_win():
     details_1.pack(fill=BOTH,expand=1)
     fetch_data2()
 
-
-    txtid =ttk.Entry(root5, font=("Arial", 12))
+    ##setting random cus_id
+    entryid=StringVar()
+    x=random.randint(1,100)
+    entryid.set(str(x))
+    
+    txtid =ttk.Entry(root5, font=("Arial", 12),textvariable=entryid)
     txtid.place(x=250, y=180)
     txtname =ttk.Entry(root5, font=("Arial", 12))
     txtname.place(x=250, y=230)
@@ -208,20 +240,29 @@ def cust_win():
     txtnationality["value"]=("Nepali","Indian","US","Others")
     txtnationality.current(0)
     txtnationality.place(x=250, y=430)
-    details=Label(root5,text="CUSTOMER DETAILS:",font=('Consolas',13,"bold"),bg="#39065D",border=0,fg="white",cursor="hand2",activebackground="#39065D",activeforeground="#39065D").place(x=100,y=130)
-    id=Label(root5,text="CUSTOMER ID",font=('Consolas',12,"bold"),bg="#39065D",border=0,fg="white",cursor="hand2",activebackground="#39065D",activeforeground="#39065D").place(x=120,y=180)
-    custmor=Label(root5,text="NAME",font=('Consolas',12,"bold"),bg="#39065D",border=0,fg="white",cursor="hand2",activebackground="#39065D",activeforeground="#39065D").place(x=180,y=230)
-    room=Label(root5,text="MOBILE NO",font=('Consolas',12,"bold"),bg="#39065D",border=0,fg="white",cursor="hand2",activebackground="#39065D",activeforeground="#39065D").place(x=130,y=280)
-    gender=Label(root5,text="GENDER",font=('Consolas',12,"bold"),bg="#39065D",border=0,fg="white",cursor="hand2",activebackground="#39065D",activeforeground="#39065D").place(x=155,y=330)
-    email=Label(root5,text="EMAIL",font=('Consolas',12,"bold"),bg="#39065D",border=0,fg="white",cursor="hand2",activebackground="#39065D",activeforeground="#39065D").place(x=165,y=380)
-    national=Label(root5,text="NATIONALITY",font=('Consolas',13,"bold"),bg="#39065D",border=0,fg="white",cursor="hand2",activebackground="#39065D",activeforeground="#39065D").place(x=110,y=430)
-    dashboard=Label(root5,text="CUSTOMER DASHBOARD",font=('Consolas',28,"bold"),bg="#39065D",border=0,fg="white",activebackground="#39065D",activeforeground="#39065D").place(x=535,y=50)
+    details=Label(root5,text="CUSTOMER DETAILS:",font=('Consolas',13,"bold"),bg="#501F1F",border=0,fg="white",cursor="hand2",activebackground="#501F1F",activeforeground="#501F1F").place(x=100,y=130)
+    id=Label(root5,text="CUSTOMER ID",font=('Consolas',12,"bold"),bg="#501F1F",border=0,fg="white",cursor="hand2",activebackground="#501F1F",activeforeground="#501F1F").place(x=120,y=180)
+    custmor=Label(root5,text="NAME",font=('Consolas',12,"bold"),bg="#501F1F",border=0,fg="white",cursor="hand2",activebackground="#501F1F",activeforeground="#501F1F").place(x=180,y=230)
+    room=Label(root5,text="MOBILE NO",font=('Consolas',12,"bold"),bg="#501F1F",border=0,fg="white",cursor="hand2",activebackground="#501F1F",activeforeground="#501F1F").place(x=130,y=280)
+    gender=Label(root5,text="GENDER",font=('Consolas',12,"bold"),bg="#501F1F",border=0,fg="white",cursor="hand2",activebackground="#501F1F",activeforeground="#501F1F").place(x=155,y=330)
+    email=Label(root5,text="EMAIL",font=('Consolas',12,"bold"),bg="#501F1F",border=0,fg="white",cursor="hand2",activebackground="#501F1F",activeforeground="#501F1F").place(x=165,y=380)
+    national=Label(root5,text="NATIONALITY",font=('Consolas',13,"bold"),bg="#501F1F",border=0,fg="white",cursor="hand2",activebackground="#501F1F",activeforeground="#501F1F").place(x=110,y=430)
+    dashboard=Label(root5,text="CUSTOMER DASHBOARD",font=('Consolas',28,"bold"),bg="#501F1F",border=0,fg="white",activebackground="#501F1F",activeforeground="#501F1F").place(x=45,y=5)
     save =Button(root5, text="ADD",command=verify,font=("Consolas", 13, "bold"), fg="black", bg="#FFA726", borderwidth=0,border=0,cursor="hand2",activebackground="black",activeforeground='black').place(x=220, y=500,width=100)
     search =Button(root5, text="SEARCH",command=search_my2,font=("Consolas", 13, "bold"), fg="black", bg="#FFA726", borderwidth=0,border=0,cursor="hand2",activebackground="black",activeforeground='black').place(x=1000, y=155,width=80)
     delete =Button(root5, text="DELETE",command=del_1,font=("Consolas", 13, "bold"), fg="black", bg="#FFA726", borderwidth=0,border=0,cursor="hand2",activebackground="black",activeforeground='black').place(x=355, y=500,width=100)
     showall =Button(root5, text="REFRESH LIST",command=fetch_data2,font=("Consolas", 13, "bold"), fg="black", bg="#FFA726", borderwidth=0,border=0,cursor="hand2",activebackground="black",activeforeground='black').place(x=1100, y=155,width=115)
     
-    Button(root5,text="back",width=3,command=mainpage).place(x=0,y=2)
+    # Button(root5,text="back",width=3,command=mainpage).place(x=0,y=2)
+    #main window button
+    logout1=Button(root5,text="LOG OUT",font=('Consolas',14,"bold"),bg="#501F1F",border=0,fg="white",cursor="hand2",activebackground="#501F1F",activeforeground="#501F1F",command=logout).place(x=1450,y=6)
+    custmor=Button(root5,text="CUSTOMERS",font=('Consolas',14,"bold"),bg="#501F1F",border=0,fg="white",cursor="hand2",activebackground="#501F1F",activeforeground="#501F1F",command=cust_dash).place(x=1100,y=7)
+    booking=Button(root5,text="Book Now",font=('Consolas',14,"bold"),bg="#A0522D",border=0,fg="white",cursor="hand2",activebackground="#501F1F",activeforeground="#501F1F",command=book_dash).place(x=820,y=6)
+    con_btn=Button(root5,text="Contact & Help",font=('Consolas',14,"bold"),bg="#501F1F",border=0,fg="white",cursor="hand2",activebackground="#501F1F",activeforeground="#501F1F").place(x=1250,y=6)
+    foodIte=Button(root5,text="FOOD ITEMS",font=('Consolas',14,"bold"),bg="#501F1F",border=0,fg="white",cursor="hand2",activebackground="#501F1F",activeforeground="#501F1F",command=bill_dash).place(x=950,y=7)
+    homebtn=Button(root5,text="Home ",font=('Consolas',14,"bold"),bg="#501F1F",border=0,fg="white",cursor="hand2",activebackground="#501F1F",activeforeground="#501F1F",command=main).place(x=700,y=6)
+
+    
     
     root5.mainloop()
     
