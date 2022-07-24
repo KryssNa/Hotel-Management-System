@@ -1,4 +1,4 @@
-
+##import important modules
 from logging import root
 import sqlite3
 from tkinter import ttk
@@ -8,9 +8,9 @@ import os
 import time
 import tkinter as tk
 from PIL import ImageTk,Image
+import random
 
-conn=sqlite3.connect('customer.db')
-c=conn.cursor()
+##connecting database
 try:
     conn=sqlite3.connect("customer.db")
     c=conn.cursor()
@@ -31,7 +31,7 @@ except:
     pass
 
 
-
+##menu category
 def details():   
     menu_category = ["Tea & Coffee","Drinks","Fast Food","Nepali dishes","Starters","Main Course","Dessert"]
 
@@ -113,10 +113,12 @@ def details():
         Button(root,text="Add",width=15,command=add_item,font=("Montserrat",9,"bold"),bg="#FFA726",fg="black",activebackground="#FFA726").place(x=100,y=170)
         root.mainloop()
 
+    #destroy current page and importing main page
     def mainpage():
         root7.destroy()
         import main
     
+    #fetching menu list from database
     def load_menu():
         conn=sqlite3.connect("menu.db")
         c=conn.cursor()
@@ -130,7 +132,7 @@ def details():
         conn.close()
         conn.close()
         
-        
+    #showing the selected item in order table
     def load_order():
         order_tabel.delete(*order_tabel.get_children())
         for category in order_dict.keys():
@@ -139,6 +141,7 @@ def details():
                     order_tabel.insert('',END,values=lis)
         update_total_price()
 
+    #adding item to order table
     def add_button_operation():
         name = itemName.get()
         rate = itemRate.get()
@@ -154,7 +157,8 @@ def details():
         lis = [name,rate,quantity,str(int(rate)*int(quantity)),category]
         order_dict[category][name] = lis
         load_order()
-        
+    
+    #showing item from menu
     def load_item_from_menu(event):
         cursor_row = menu_tabel.focus()
         contents = menu_tabel.item(cursor_row)
@@ -248,6 +252,8 @@ def details():
         load_order()
 
     def update_total_price():
+        # a=previousbill_entry.get()
+        # b=int(a)
         price = 0
         for i in menu_category:
             for j in order_dict[i].keys():
@@ -257,10 +263,13 @@ def details():
         else:
             totalPrice.set("Rs. "+str(price)+"  /-")
 
+
     ##bill function
     def bill_button_operation():
         customer_name = customerName.get()
         customer_contact = customerContact.get()
+        a=previousbill_entry.get()
+        b=totalPrice.get()
         names = []
         for i in menu_category:
             names.extend(list(order_dict[i].keys()))
@@ -280,8 +289,8 @@ def details():
             bill.title("Bill")
             bill.geometry("820x450+300+100")
             bill_text_area = Text(bill, font=("Montserrat", 12))
-            st = "\t\t\t HOTEL MANGEMENT SYSTEM\n\t\t\t Designed and Programmed by\n"
-            st += "\t\t\t\tkryss na\n"
+            st = "\t\t\t SUNSET GRAND HOTEL\n\t\t\t Designed and Programmed by\n"
+            st += "\t\t\t\tTeam:Hype\n"
             st += "-"*61 + "BILL" + "-"*61 + "\nDate:- "
 
             #Date and time
@@ -308,7 +317,7 @@ def details():
             st += "-"*130
 
             #Total Price
-            st += f"\n\t\t\tTotal price : {totalPrice.get()}\n"
+            st += f"\n\t\t\tTotal price : {a}\n"
             st += "-"*130
 
             #display bill in new window
@@ -393,11 +402,98 @@ def details():
     def main():
         root7.destroy()
         import main
+        ##reports and feedback function
+    def reports():
+        root=Toplevel()
+        root.title("Contact & Help")
+        root.geometry('680x420')
+        root.configure(bg="#39065D")
 
+        try:
+            conn=sqlite3.connect("customer.db")
+            c=conn.cursor()
+            c.execute("""CREATE TABLE reports(
+                feedback integer,
+                report text)""")
+            conn.commit()
+            conn.close()
+        except:
+            pass
+
+        ##feedback and report function
+        def add_data():
+            # print(txtfield.get("1.0",END))
+            a=txtfield.get()
+            if a =="":
+                tmsg.showerror("Error","All field are required")
+            else:
+                try:
+                    conn= sqlite3.connect("customer.db")
+                    c=conn.cursor()
+                    # print("yes")
+                    c.execute("INSERT INTO reports VALUES(:feedback,:report)",{
+                        "feedback":txt54.get(),
+                        "report":txtfield.get()
+                        })
+                    conn.commit()
+                    conn.close()
+                    tmsg.showinfo("Success",'''
+                    Thanks for reporting.
+                    Your Report has been sent your report to our 
+                    Database Engineer.
+                    This issue will be resolved shortly.
+                    Thanks!''')
+                except Exception as es:
+                    tmsg.showerror("Error", f"error due to:{str(es)}")
+        reort=Label(root,text="REPORT AN ISSUE",font=('Montserrat Semibold',25),bg="#39065D",border=0,fg="white",cursor="hand2",activebackground="#39065D",activeforeground="#39065D").place(x=170,y=20)
+        reort1=Label(root,text='''
+        If you're having trouble after using this application,
+        you've come to the right place. Please use this form 
+        to tell us about the issue you're experiencing.
+        Please provide a detailed description of this issue,including:
+        What you were doing when the problem occurred?
+        What you expected to happend?
+        What actually happened?
+        ''',font=('Montserrat',10),bg="#39065D",border=0,fg="white",cursor="hand2",activebackground="#39065D",activeforeground="#39065D").place(x=300,y=60)
+        reort2=Label(root,text="CONTACT US",font=('Montserrat',15,"bold"),bg="#39065D",border=0,fg="green",cursor="hand2",activebackground="#39065D",activeforeground="#39065D").place(x=88,y=130)
+        reort2=Label(root,text='''
+        Mailing Address:
+        krishna.kryss@gmail.com
+        HOTEL MANAGEMENT SYSTEM
+        Designed and Programed by
+        Team:Hype
+        220179@softwarica.edu.np
+        +9779811787904
+        Softwarica College of IT & E-Commerce
+        ''',font=('Montserrat',12),bg="#39065D",border=0,fg="white",cursor="hand2",activebackground="#39065D",activeforeground="#39065D").place(x=0,y=150)
+        txt54=StringVar()
+        x=random.randint(1,100)
+        txt54.set(str(x))
+        print(x)
+        
+        #entry box to fetch record
+        txtreport=Entry(root,textvariable=txt54,font=("Arial", 10))
+        txtfield=Entry(root,font="Montserrat")
+        txtfield.place(x=300,y=200,height=150,width=350)
+        report_button =Button(root, text="SUBMIT  REPORT",command=add_data,font=("Montserrat bold",9,"bold"),width=18,bg="#FFA726",fg="black",activebackground="#FFA726",activeforeground="#FFA726",cursor="hand2")
+        report_button.place(x=400,y=370)
+
+    ##previous bill operation
+    def previous_bill():
+        conn=sqlite3.connect("customer.db")
+        c=conn.cursor()
+        c.execute("SELECT total FROM room")
+        recor=c.fetchone()
+        print(recor)
+        for record in recor:
+            previousbill_entry.insert(END,record)
+            
+        conn.commit()
+        conn.close()
 
     
     #==================Backend Code Ends===============
-
+    #windoow profile
     root7=Tk()
     w, h = root7.winfo_screenwidth(), root7.winfo_screenheight()
     root7.geometry("%dx%d+0+0" % (w, h))
@@ -427,19 +523,19 @@ def details():
     #main window button
     logout1=Button(root7,text="LOG OUT",font=('Consolas',14,"bold"),bg="#501F1F",border=0,fg="white",cursor="hand2",activebackground="#501F1F",activeforeground="#501F1F",command=logout).place(x=1450,y=6)
     custmor=Button(root7,text="CUSTOMERS",font=('Consolas',14,"bold"),bg="#501F1F",border=0,fg="white",cursor="hand2",activebackground="#501F1F",activeforeground="#501F1F",command=cust_dash).place(x=1100,y=7)
-    booking=Button(root7,text="Book Now",font=('Consolas',14,"bold"),bg="#A0522D",border=0,fg="white",cursor="hand2",activebackground="#501F1F",activeforeground="#501F1F",command=book_dash).place(x=820,y=6)
-    con_btn=Button(root7,text="Contact & Help",font=('Consolas',14,"bold"),bg="#501F1F",border=0,fg="white",cursor="hand2",activebackground="#501F1F",activeforeground="#501F1F").place(x=1250,y=6)
-    foodIte=Button(root7,text="FOOD ITEMS",font=('Consolas',14,"bold"),bg="#501F1F",border=0,fg="white",cursor="hand2",activebackground="#501F1F",activeforeground="#501F1F",command=bill_dash).place(x=950,y=7)
+    booking=Button(root7,text="Book Now",font=('Consolas',14,"bold"),bg="#501F1F",border=0,fg="white",cursor="hand2",activebackground="#501F1F",activeforeground="#501F1F",command=book_dash).place(x=820,y=6)
+    con_btn=Button(root7,text="Contact & Help",font=('Consolas',14,"bold"),bg="#501F1F",border=0,fg="white",cursor="hand2",activebackground="#501F1F",activeforeground="#501F1F",command=reports).place(x=1250,y=6)
+    foodIte=Button(root7,text="FOOD ITEMS",font=('Consolas',14,"bold"),bg="#A0522D",border=1,fg="white",cursor="hand2",activebackground="#501F1F",activeforeground="#501F1F",command=bill_dash).place(x=950,y=7)
     homebtn=Button(root7,text="Home ",font=('Consolas',14,"bold"),bg="#501F1F",border=0,fg="white",cursor="hand2",activebackground="#501F1F",activeforeground="#501F1F",command=main).place(x=700,y=6)
 
     
     #==============Customer=============
-    customer_frame = LabelFrame(root7,text="Customer Details",font=("Montserrat", 14,),border=0,
-                                bg="#501F1F",fg="white")
+    customer_frame = LabelFrame(root7,text="Customer Details",font=("Montserrat", 16,""),border=0,
+                                bg="#A0522D",fg="white")
     customer_frame.place(x=0,y=95 ,width=680,height=100)
 
     customer_name_label = Label(customer_frame, text="Name", 
-                        font=("Montserrat", 14),bg = "#501F1F", fg="white")
+                        font=("Montserrat", 14),bg = "#A0522D", fg="white")
     customer_name_label.grid(row = 0, column = 0)
 
     customerName = StringVar()
@@ -449,7 +545,7 @@ def details():
     customer_name_entry.grid(row = 0, column=1,padx=30)
 
     customer_contact_label = Label(customer_frame, text="Contact", 
-                        font=("Montserra", 15, "bold"),bg = "#501F1F", fg="white")
+                        font=("Montserra", 15, "bold"),bg = "#A0522D", fg="white")
     customer_contact_label.grid(row = 0, column = 2)
 
     customerContact = StringVar()
@@ -504,7 +600,7 @@ def details():
                 yscrollcommand=scrollbar_menu_y.set)
     ##adding some bg color
     menu_tabel.tag_configure('oddrow', background="white")
-    menu_tabel.tag_configure('evenrow', background="lightblue")
+    menu_tabel.tag_configure("evenrow", background="lightblue",foreground="lightblue")
     
     menu_tabel.heading("name",text="Name")
     menu_tabel.heading("category",text="Category")
@@ -525,11 +621,11 @@ def details():
     ###########################################################################################
 
     #===============Item Frame=============
-    item_frame = Frame(root7, bg="#39065D")
+    item_frame = Frame(root7, bg="#A0522D")
     item_frame.place(x=680,y=170,height=230,width=680)
 
     item_title_label = Label(item_frame, text="Selected Product", 
-                        font=("Montserrat Semibold", 15,),bg = "#39065D", fg="white")
+                        font=("Montserrat Semibold", 15,),bg = "#A0522D", fg="white")
     item_title_label.pack(side=TOP,fill="x")
 
     item_frame2 = Frame(item_frame, bg="#39065D")
@@ -593,7 +689,7 @@ def details():
                         font=("Montserrat", 15, "bold"),bg = "#39065D", fg="white")
     order_title_label.pack(side=TOP,fill="x")
 
-    ############################## Order Tabel ###################################
+    ############# Order Tabel ###################################
     order_tabel_frame = Frame(order_frame)
     order_tabel_frame.place(x=0,y=40,height=260,width=680)
 
@@ -628,26 +724,38 @@ def details():
     ##label for total price
     total_price_label = Label(order_frame, text="Total Price", 
                         font=("Montserrat", 12, "bold"),bg = "#39065D", fg="white")
-    total_price_label.pack(side=LEFT,anchor=SW,padx=20,pady=10)
+    total_price_label.pack(side=LEFT,anchor=SW,padx=20,pady=5)
+
+    ##label for previous bill
+    total_price_labe = Label(order_frame, text="Previous Bill", 
+                        font=("Montserrat", 12, "bold"),bg = "#39065D", fg="white")
+    total_price_labe.place(x=20,y=310)
 
     ##entry for total price
     totalPrice = StringVar()
     totalPrice.set("")
     total_price_entry = Entry(order_frame, font="arial 12",textvariable=totalPrice,state=DISABLED, 
                                 width=10)
-    total_price_entry.pack(side=LEFT,anchor=SW,padx=0,pady=10)
+    total_price_entry.place(x=150,y=340)
+
+    ##entry for previous bill
+    previousbill_entry = Entry(order_frame, font="arial 12", 
+                                width=10)
+    previousbill_entry.place(x=150,y=310)
 
     ##bill button
-    bill_button = Button(order_frame,font=("Montserrat",9,"bold"), command=bill_button_operation,text="Bill",width=10,bg="#FFA726",activebackground="#FFA726"
+    bill_button = Button(order_frame,font=("Montserrat",9,"bold"), command=bill_button_operation,text=" Print Bill",width=10,bg="#FFA726",activebackground="#FFA726"
                         )
-    bill_button.pack(side=LEFT,anchor=SW,padx=80,pady=10)
+    bill_button.place(x=350,y=330)
+    
+    ##bill button
+    previous_bill_button = Button(order_frame,font=("Montserrat",7,"bold"), command=previous_bill,text="Show",width=6,bg="#FFA726",activebackground="#FFA726"
+                        )
+    previous_bill_button.place(x=260,y=310)
 
     ##cancel order button
     cancel_button =Button(order_frame, text="Cancel Order",font=("Montserrat",9,"bold"),command=cancel_button_operation,width=12,bg="#FFA726",fg="black",activebackground="#FFA726")
-    cancel_button.pack(side=LEFT,anchor=SW,padx=20,pady=10)
-
-    ##button to go back to mainpage
-    # Button(root7,text="back",width=3,command=mainpage).place(x=0,y=2)
+    cancel_button.place(x=450,y=330)
 
     root7.mainloop()
     
