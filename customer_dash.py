@@ -50,10 +50,10 @@ def cust_win():
     imgs.place(x=500,y=45)
     #background logo
     phot=Image.open("image/logo.png")
-    lod=phot.resize((150,120))
+    lod=phot.resize((100,100))
     resize_im=ImageTk.PhotoImage(lod)
     img=Label(root5,image=resize_im)
-    img.place(x=265,y=50)
+    img.place(x=1,y=50)
 
     
     #function to go back to main page

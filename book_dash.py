@@ -20,10 +20,10 @@ root6.configure(bg="#501F1F")
 
 #background logo
 phot=Image.open("image/logo.png")
-lod=phot.resize((300,190))
+lod=phot.resize((300,220))
 resize_im=ImageTk.PhotoImage(lod)
 img=Label(root6,image=resize_im)
-img.place(x=665,y=50)
+img.place(x=1220,y=50)
 
 
 #creating database
