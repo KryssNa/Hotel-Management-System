@@ -14,14 +14,22 @@ import time
 
 #main window
 root6=Tk()
-root6.title("Hotel Mangement System")
+root6.title("Hotel Mangement System")#window title
 root6.geometry('1550x800+0+0')
 root6.configure(bg="#501F1F")
+
+#background logo
+phot=Image.open("image/logo.png")
+lod=phot.resize((300,190))
+resize_im=ImageTk.PhotoImage(lod)
+img=Label(root6,image=resize_im)
+img.place(x=665,y=50)
 
 
 #creating database
 try:
-    conn=sqlite3.connect("customer.db")
+    ##creating table room with details
+    conn=sqlite3.connect("customer.db")##connecting database
     c=conn.cursor()
     c.execute("""CREATE TABLE room(
        cust_id integer PRIMARY KEY,
@@ -50,7 +58,8 @@ def add_data1():
         messagebox.showerror("Error","All field are required")
     else:
         try:
-            conn= sqlite3.connect("customer.db")
+            ##insserting data into table room
+            conn= sqlite3.connect("customer.db")#connecting database
             c=conn.cursor()
             # print("yes")
             c.execute("INSERT INTO room VALUES(:cus_id,:check_in,:check_out,:room_type,:room_no,:meal,:nofdays,:contact,:total)",{
@@ -66,9 +75,9 @@ def add_data1():
                                         })  
             conn.commit()
             conn.close()
-            messagebox.showinfo("Success","DATA IS INSERTED!!")
+            messagebox.showinfo("Success","Checked In Successfully!!")
         except Exception as es:
-            messagebox.showerror("Error", f"error due to:{str(es)}")
+            messagebox.showerror("Error", f"error due to:{str(es)}")##messagebox to raise exception when error occurs
 
 ##function to fetch details of customer
 def fetch():
@@ -346,6 +355,87 @@ def bill_dash():
     root6.destroy()
     import bill_win
 
+##head to main window
+def main():
+    root6.destroy()
+    import main
+
+##reports and feedback function
+def reports():
+    root=Toplevel()
+    root.title("Contact & Help")
+    root.geometry('680x420')
+    root.configure(bg="#39065D")
+
+    try:
+        conn=sqlite3.connect("customer.db")
+        c=conn.cursor()
+        c.execute("""CREATE TABLE reports(
+            feedback integer,
+            report text)""")
+        conn.commit()
+        conn.close()
+    except:
+        pass
+
+    ##feedback and report function
+    def add_data():
+        # print(txtfield.get("1.0",END))
+        a=txtfield.get()
+        if a =="":
+            messagebox.showerror("Error","All field are required")
+        else:
+            try:
+                ##inserting reports in to database
+                conn= sqlite3.connect("customer.db")
+                c=conn.cursor()
+                # print("yes")
+                c.execute("INSERT INTO reports VALUES(:feedback,:report)",{
+                    "feedback":txt54.get(),
+                    "report":txtfield.get()
+                    })
+                conn.commit()
+                conn.close()
+                messagebox.showinfo("Success",'''
+                Thanks for reporting.
+                Your Report has been sent your report to our 
+                Database Engineer.
+                This issue will be resolved shortly.
+                Thanks!''')
+            except Exception as es:
+                messagebox.showerror("Error", f"error due to:{str(es)}")
+    ##report label
+    reort=Label(root,text="REPORT AN ISSUE",font=('Montserrat Semibold',25),bg="#39065D",border=0,fg="white",cursor="hand2",activebackground="#39065D",activeforeground="#39065D").place(x=170,y=20)
+    reort1=Label(root,text='''
+    If you're having trouble after using this application,
+    you've come to the right place. Please use this form 
+    to tell us about the issue you're experiencing.
+    Please provide a detailed description of this issue,including:
+    What you were doing when the problem occurred?
+    What you expected to happend?
+    What actually happened?
+    ''',font=('Montserrat',10),bg="#39065D",border=0,fg="white",cursor="hand2",activebackground="#39065D",activeforeground="#39065D").place(x=300,y=60)
+    reort2=Label(root,text="CONTACT US",font=('Montserrat',15,"bold"),bg="#39065D",border=0,fg="green",cursor="hand2",activebackground="#39065D",activeforeground="#39065D").place(x=88,y=130)
+    reort2=Label(root,text='''
+    Mailing Address:
+    krishna.kryss@gmail.com
+    HOTEL MANAGEMENT SYSTEM
+    Designed and Programed by
+    Team:Hype
+    220179@softwarica.edu.np
+    +9779811787904
+    Softwarica College of IT & E-Commerce
+    ''',font=('Montserrat',12),bg="#39065D",border=0,fg="white",cursor="hand2",activebackground="#39065D",activeforeground="#39065D").place(x=0,y=150)
+    txt54=StringVar()
+    x=random.randint(1,100)
+    txt54.set(str(x))
+    print(x)
+    ##entrybox for reports
+    txtreport=Entry(root,textvariable=txt54,font=("Arial", 10))
+    txtfield=Entry(root,font="Montserrat")
+    txtfield.place(x=300,y=200,height=150,width=350)
+    report_button =Button(root, text="SUBMIT  REPORT",command=add_data,font=("Montserrat bold",9,"bold"),width=18,bg="#FFA726",fg="black",activebackground="#FFA726",activeforeground="#FFA726",cursor="hand2")
+    report_button.place(x=400,y=370)
 
 
 #============== Frame ======================================================#        
@@ -392,17 +482,17 @@ txtcontact =ttk.Entry(root6,textvariable=contact, font=("Arial", 12))
 txtcontact.place(x=250, y=185)
 txtid =ttk.Entry(root6,textvariable=cust_id, font=("Arial",12))
 txtid.place(x=250, y=140)
-
+##checkin entry
 txtcheckin=ttk.Entry(root6,textvariable=check_in, font=("Arial", 12))
 txtcheckin.insert(0,"DD/MM/YYYY")
 txtcheckin.place(x=250, y=230)
 txtcheckin.bind('<FocusIn>',remove)
-
+#checkout entry
 txtcheckout=ttk.Entry(root6,textvariable=check_out, font=("Arial", 12))
 txtcheckout.insert(0,"DD/MM/YYYY")
 txtcheckout.place(x=250, y=280)
 txtcheckout.bind('<FocusIn>',remove)
-
+##combobox to select meal
 txtmeal=ttk.Combobox(root6,textvariable=meal, state="readonly",font=("Arial", 12),width=18)
 txtmeal["value"]=("Breakfast","Lunch","Dinner")
 txtmeal.current(0)
@@ -454,17 +544,12 @@ btn_checkout  =Button(root6, text="Check Out",command=verifycheckout,font=("Cons
 showall_btn =Button(root6, text="REFRESH LIST",command=fetch,font=("Consolas", 13, "bold"), fg="black", bg="#FFA726", borderwidth=0,border=0,cursor="hand2",activebackground="black",activeforeground='black').place(x=1100, y=250,width=115)
 fetch_data =Button(root6, text="FETCH DATA",command=fetch_dataa,font=("Consolas", 11, "bold"), fg="black", bg="#FFA726", borderwidth=0,border=0,cursor="hand2",activebackground="black",activeforeground='black').place(x=450, y=140,width=100)
 
-# #button to go back to main page
-# Button(root6,text="back",width=3,command=mainpage).place(x=0,y=2)
-
-#main window button
+#main window button and their function
 logout1=Button(root6,text="LOG OUT",font=('Consolas',14,"bold"),bg="#501F1F",border=0,fg="white",cursor="hand2",activebackground="#501F1F",activeforeground="#501F1F",command=logout).place(x=1450,y=6)
 custmor=Button(root6,text="CUSTOMERS",font=('Consolas',14,"bold"),bg="#501F1F",border=0,fg="white",cursor="hand2",activebackground="#501F1F",activeforeground="#501F1F",command=cust_dash).place(x=1100,y=7)
-booking=Button(root6,text="Book Now",font=('Consolas',14,"bold"),bg="#A0522D",border=0,fg="white",cursor="hand2",activebackground="#501F1F",activeforeground="#501F1F",command=book_dash).place(x=820,y=6)
-con_btn=Button(root6,text="Contact & Help",font=('Consolas',14,"bold"),bg="#501F1F",border=0,fg="white",cursor="hand2",activebackground="#501F1F",activeforeground="#501F1F").place(x=1250,y=6)
+booking=Button(root6,text="Book Now",font=('Consolas',14,"bold"),bg="#A0522D",border=1,fg="white",cursor="hand2",activebackground="#501F1F",activeforeground="#501F1F",command=book_dash).place(x=820,y=6)
+con_btn=Button(root6,text="Contact & Help",font=('Consolas',14,"bold"),bg="#501F1F",border=0,fg="white",cursor="hand2",activebackground="#501F1F",activeforeground="#501F1F",command=reports).place(x=1250,y=6)
 foodIte=Button(root6,text="FOOD ITEMS",font=('Consolas',14,"bold"),bg="#501F1F",border=0,fg="white",cursor="hand2",activebackground="#501F1F",activeforeground="#501F1F",command=bill_dash).place(x=950,y=7)
-homebtn=Button(root6,text="Home ",font=('Consolas',14,"bold"),bg="#501F1F",border=0,fg="white",cursor="hand2",activebackground="#501F1F",activeforeground="#501F1F").place(x=700,y=6)
-
-
+homebtn=Button(root6,text="Home ",font=('Consolas',14,"bold"),bg="#501F1F",border=0,fg="white",cursor="hand2",activebackground="#501F1F",activeforeground="#501F1F",command=main).place(x=700,y=6)
 
 root6.mainloop()

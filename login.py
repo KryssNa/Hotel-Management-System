@@ -1,19 +1,22 @@
+#import necessary modules
 from tkinter import messagebox
 from tkinter import *
 from PIL import Image, ImageTk
 import sqlite3
 import random
 
-#window title 
+#creating window 
 root=Tk()
-root.title("Hotel Management System")
+root.title("Hotel Management System")#window tile
 root.geometry("1550x850")
+root.config(bg="#501F1F")
 
 #background image
-image1=Image.open("67.png")
-photo=ImageTk.PhotoImage(image1)
-image_label=Label(image=photo)
-image_label.pack()
+photo=Image.open("image/lphoto.jpg")
+load=photo.resize((1550,750))
+resize_img=ImageTk.PhotoImage(load)
+imgs=Label(root,image=resize_img)
+imgs.place(x=0,y=35)
 
 ##login page
 def login():
@@ -31,7 +34,7 @@ def login():
       
     # #login frame
     myframe=Frame(root,height=350,width=300,bg="black",pady=20,padx=35)
-    myframe.place(x=505,y=110)
+    myframe.place(x=555,y=130)
     
     #authorization check
     def check():
@@ -86,8 +89,8 @@ def login():
             password_ent.delete(0, END)  
 
     #label get started
-    l_getstarted=Label(myframe,text="Get started",font=("Montserrat SemiBold", 15, "bold"),fg="white",bg="black")
-    l_getstarted.place(x=50,y=0)
+    l_getstarted=Label(myframe,text="WELCOME",font=("Montserrat SemiBold", 15, "bold"),fg="white",bg="black")
+    l_getstarted.place(x=60,y=0)
 
     #email label and entry
     l_email=Label(myframe,text="Email",fg="white",bg="black",font=("Montserrat light", 11, "bold"))
@@ -147,12 +150,12 @@ def reset():
     #creating a toplevel
     top=Toplevel()
     # top.geometry('380x350')
-    top.maxsize(height=450,width=450)
-    top.minsize(height=450,width=450)
+    top.maxsize(height=350,width=380)
+    top.minsize(height=350,width=380)
     top.title('Forgot Password')
 
-    Frame(top,bg='#b4cef3',height=400,width=400).place(x=0,y=0)
-    Label(top, text='RESET PASSWORD', bg="#b4cef3", fg='white', font=('Arial',20,'bold')).place(x=50, y=20)
+    Frame(top,bg='#501F1F',height=400,width=400).place(x=0,y=0)
+    Label(top, text='RESET PASSWORD', bg="#501F1F", fg='white', font=('Arial',20,'bold')).place(x=50, y=20)
 
     #remove functionalities for placeholders
     def remove(event):
@@ -197,7 +200,7 @@ def reset():
     lst=[a,b,c]
     ques=random.choice(lst)
     num=int(ques[1])-1
-    Label(top,text=ques,bg='#b4cef3').place(x=40,y=118)
+    Label(top,text=ques,bg='#501F1F',fg="white").place(x=40,y=118)
     Entry(top,textvariable=ans1).place(x=40,y=140,width=290,height=30)
 
     #new password
@@ -206,16 +209,16 @@ def reset():
     new_ps_ent.place(x=40, y=190,width=210, height=30)
     new_ps_ent.bind('<FocusIn>', remove2) #bind function is used to know the mouse movement (if it is clicked or hovering and so on)
     showw=IntVar(value=1)
-    Checkbutton(top,text='Show',offvalue=0,variable=showw,bg='#b4cef3',command=show).place(x=260,y=193)
+    Checkbutton(top,text='Show',offvalue=0,variable=showw,bg='#501F1F',command=show).place(x=260,y=193)
 
     new_psc_ent=Entry(top)
     new_psc_ent.insert(0, 'Confirm New Password') #default text inserted in entry box, 0 is positional argument
     new_psc_ent.place(x=40, y=230,width=210, height=30)
     new_psc_ent.bind('<FocusIn>', remove3) #bind function is used to know the mouse movement (if it is clicked or hovering and so on)
     showww=IntVar(value=1)
-    Checkbutton(top,text='Show',offvalue=0,variable=showww,bg='#b4cef3',command=show2).place(x=260,y=233)
+    Checkbutton(top,text='Show',offvalue=0,variable=showww,bg='#501F1F',command=show2).place(x=260,y=233)
 
-    Button(top,text="CONFIRM",font=('Arial',10,'bold'),fg='white',bg="#338bd7",width=16,height=2,cursor='hand2',command=lambda:verify()).place(x=120, y=280)
+    Button(top,text="CONFIRM",font=('Arial',10,'bold'),fg='white',bg="#F47F16",width=15,height=2,cursor='hand2',command=lambda:verify()).place(x=100, y=280)
 
     #update new password
     def update():
@@ -271,5 +274,114 @@ def reset():
                 messagebox.showerror("Password Reset","Passwords Mismatch")
             else:
                 update()
-login()    
+login()  
+
+#logout function
+def logout():
+    messagebox.showerror("Error","Login first?")
+
+
+##import customer dashboard
+def cust_dash():
+    messagebox.showerror("Error","Login first?")
+   
+##import booking dashboard
+def book_dash():
+    messagebox.showerror("Error","Login first?")
+    
+##import billdash
+def bill_dash():
+    messagebox.showerror("Error","Login first?")
+    
+##head to main window
+def main():
+    messagebox.showerror("Error","Login first?")
+
+##reports and feedback function
+def reports():
+    #toplevel is to show current window in parent window
+    root=Toplevel()
+    root.title("Contact & Help")#title
+    root.geometry('680x420')
+    root.configure(bg="#39065D")
+
+    try:
+        conn=sqlite3.connect("customer.db")#connecting to database
+        c=conn.cursor()
+        c.execute("""CREATE TABLE reports(
+            feedback integer,
+            report text)""")
+        conn.commit()
+        conn.close()
+    except:
+        pass
+
+    ##feedback and report function
+    def add_data():
+        # print(txtfield.get("1.0",END))
+        a=txtfield.get()
+        if a =="":
+            messagebox.showerror("Error","All field are required")
+        else:
+            try:
+                conn= sqlite3.connect("customer.db")#connecting to database
+                c=conn.cursor()
+                # print("yes")
+                c.execute("INSERT INTO reports VALUES(:feedback,:report)",{
+                    "feedback":txt54.get(),
+                    "report":txtfield.get()
+                    })
+                conn.commit()
+                conn.close()
+                messagebox.showinfo("Success",'''
+                Thanks for reporting.
+                Your Report has been sent your report to our 
+                Database Engineer.
+                This issue will be resolved shortly.
+                Thanks!''')
+            except Exception as es:
+                messagebox.showerror("Error", f"error due to:{str(es)}")
+    #label report
+    reort=Label(root,text="REPORT AN ISSUE",font=('Montserrat Semibold',25),bg="#39065D",border=0,fg="white",cursor="hand2",activebackground="#39065D",activeforeground="#39065D").place(x=170,y=20)
+    reort1=Label(root,text='''
+    If you're having trouble after using this application,
+    you've come to the right place. Please use this form 
+    to tell us about the issue you're experiencing.
+    Please provide a detailed description of this issue,including:
+    What you were doing when the problem occurred?
+    What you expected to happend?
+    What actually happened?
+    ''',font=('Montserrat',10),bg="#39065D",border=0,fg="white",cursor="hand2",activebackground="#39065D",activeforeground="#39065D").place(x=300,y=60)
+    reort2=Label(root,text="CONTACT US",font=('Montserrat',15,"bold"),bg="#39065D",border=0,fg="green",cursor="hand2",activebackground="#39065D",activeforeground="#39065D").place(x=88,y=130)
+    reort2=Label(root,text='''
+    Mailing Address:
+    krishna.kryss@gmail.com
+    HOTEL MANAGEMENT SYSTEM
+    Designed and Programed by
+    Team:Hype
+    220179@softwarica.edu.np
+    +9779811787904
+    Softwarica College of IT & E-Commerce
+    ''',font=('Montserrat',12),bg="#39065D",border=0,fg="white",cursor="hand2",activebackground="#39065D",activeforeground="#39065D").place(x=0,y=150)
+    txt54=StringVar()
+    x=random.randint(1,100)
+    txt54.set(str(x))
+    print(x)
+
+    #entry to write reports
+    txtreport=Entry(root,textvariable=txt54,font=("Arial", 10))
+    txtfield=Entry(root,font="Montserrat")
+    txtfield.place(x=300,y=200,height=150,width=350)
+    report_button =Button(root, text="SUBMIT  REPORT",command=add_data,font=("Montserrat bold",9,"bold"),width=18,bg="#FFA726",fg="black",activebackground="#FFA726",activeforeground="#FFA726",cursor="hand2")
+    report_button.place(x=400,y=370)
+
+
+#main window button and their function
+logout1=Button(root,text="LOG IN",font=('Consolas',14,"bold"),bg="#A0522D",border=0,fg="white",cursor="hand2",activebackground="#501F1F",activeforeground="#501F1F",command=logout).place(x=1450,y=0)
+custmor=Button(root,text="CUSTOMERS",font=('Consolas',14,"bold"),bg="#501F1F",border=0,fg="white",cursor="hand2",activebackground="#501F1F",activeforeground="#501F1F",command=cust_dash).place(x=1100,y=1)
+booking=Button(root,text="Book Now",font=('Consolas',14,"bold"),bg="#501F1F",border=0,fg="white",cursor="hand2",activebackground="#501F1F",activeforeground="#501F1F",command=book_dash).place(x=820,y=0)
+con_btn=Button(root,text="Contact & Help",font=('Consolas',14,"bold"),bg="#501F1F",border=0,fg="white",cursor="hand2",activebackground="#501F1F",activeforeground="#501F1F",command=reports).place(x=1250,y=0)
+foodIte=Button(root,text="FOOD ITEMS",font=('Consolas',14,"bold"),bg="#501F1F",border=0,fg="white",cursor="hand2",activebackground="#501F1F",activeforeground="#501F1F",command=bill_dash).place(x=950,y=1)
+homebtn=Button(root,text="Home ",font=('Consolas',14,"bold"),bg="#501F1F",border=0,fg="white",cursor="hand2",activebackground="#501F1F",activeforeground="#501F1F",command=main).place(x=700,y=0)
+
 root.mainloop()

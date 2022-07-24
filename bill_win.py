@@ -12,6 +12,7 @@ import random
 
 ##connecting database
 try:
+    #creating database bill
     conn=sqlite3.connect("customer.db")
     c=conn.cursor()
     c.execute("""CREATE TABLE bill(
@@ -42,7 +43,7 @@ def details():
     
     order_dict = {}
     for i in menu_category:
-        order_dict[i] = {}
+        order_dict[i] = {}##storing menu category to order dict
 
 #====================Backend Functions===========================#      
         
@@ -50,10 +51,11 @@ def details():
     def menu_window():
         root=Toplevel()
         root.geometry("300x200")
-        root.config(background="#39065D")
+        root.config(background="#501F1F")
         root.title("Menu")
         
         try:
+            #3creating table menulist
             conn=sqlite3.connect("menu.db")
             c=conn.cursor()
             c.execute(""" CREATE TABLE menulist (
@@ -70,6 +72,7 @@ def details():
         
         def add_item():
             try:
+                ##inserting item into menulist
                 conn=sqlite3.connect("menu.db")
                 c=conn.cursor()
                 c.execute("INSERT INTO menulist VALUES(:item,:category,:rate)",{
@@ -94,7 +97,7 @@ def details():
 
         
         ##entry and label for item
-        label_item=Label(root,text="Item name",background="#39065D",fg="white",font=("Montserrat",9,"bold"))
+        label_item=Label(root,text="Item name",background="#501F1F",fg="white",font=("Montserrat",9,"bold"))
         label_item.place(x=27,y=50)
         
         item=StringVar()
@@ -102,7 +105,7 @@ def details():
         entry_item.place(x=100,y=50)
         
         ##label and entry for rate
-        label_rate=Label(root,text="Rate",background="#39065D",fg="white",font=("Montserrat",9,"bold"))
+        label_rate=Label(root,text="Rate",background="#501F1F",fg="white",font=("Montserrat",9,"bold"))
         label_rate.place(x=52,y=110)
         
         rate=StringVar()
@@ -168,6 +171,7 @@ def details():
         itemCategory.set(row[1])
         itemQuantity.set("1")
 
+    #function to load item from menu
     def load_item_from_order():
         cursor_row = order_tabel.focus()
         contents = order_tabel.item(cursor_row)
@@ -178,6 +182,7 @@ def details():
         itemQuantity.set(row[2])
         itemCategory.set(row[4])
 
+    ##function to show menu list
     def show_button_operation():
         category = menuCategory.get()
         if category not in menu_category:
@@ -198,13 +203,14 @@ def details():
                     name = line[:line.rfind(" ")]
                     price = line[line.rfind(" ")+1:-3]
                     menu_tabel.insert('',END,values=[name,price,category])
-
+    ##function to clear entry box
     def clear_button_operation():
         itemName.set("")
         itemRate.set("")
         itemQuantity.set("")
         itemCategory.set("")
 
+    #function to cancel order
     def cancel_button_operation():
         names = []
         for i in menu_category:
@@ -221,6 +227,7 @@ def details():
         clear_button_operation()
         update_total_price()
 
+    #function to update quantity
     def update_quantity():
         name = itemName.get()
         rate = itemRate.get()
@@ -239,6 +246,7 @@ def details():
         order_dict[category][name][3] = str(int(rate)*int(quantity))
         load_order()
 
+    #functiont to remove item from menu
     def remove_button_operation():
         name = itemName.get()
         category = itemCategory.get()
@@ -251,6 +259,7 @@ def details():
         del order_dict[category][name]
         load_order()
 
+    #function to update total price
     def update_total_price():
         # a=previousbill_entry.get()
         # b=int(a)
@@ -344,8 +353,7 @@ def details():
             bill.focus_set()
             bill.protocol("WM_DELETE_WINDOW", close_window)
 
-    
-    
+    #function to close window
     def close_window():
         tmsg.showinfo("Thanks", "Thanks for using our service")
         root7.destroy()
@@ -407,9 +415,10 @@ def details():
         root=Toplevel()
         root.title("Contact & Help")
         root.geometry('680x420')
-        root.configure(bg="#39065D")
+        root.configure(bg="#501F1F")
 
         try:
+            #creating table reports
             conn=sqlite3.connect("customer.db")
             c=conn.cursor()
             c.execute("""CREATE TABLE reports(
@@ -428,6 +437,7 @@ def details():
                 tmsg.showerror("Error","All field are required")
             else:
                 try:
+                    #inserting data into reports
                     conn= sqlite3.connect("customer.db")
                     c=conn.cursor()
                     # print("yes")
@@ -445,7 +455,7 @@ def details():
                     Thanks!''')
                 except Exception as es:
                     tmsg.showerror("Error", f"error due to:{str(es)}")
-        reort=Label(root,text="REPORT AN ISSUE",font=('Montserrat Semibold',25),bg="#39065D",border=0,fg="white",cursor="hand2",activebackground="#39065D",activeforeground="#39065D").place(x=170,y=20)
+        reort=Label(root,text="REPORT AN ISSUE",font=('Montserrat Semibold',25),bg="#501F1F",border=0,fg="white",cursor="hand2",activebackground="#501F1F",activeforeground="#501F1F").place(x=170,y=20)
         reort1=Label(root,text='''
         If you're having trouble after using this application,
         you've come to the right place. Please use this form 
@@ -454,8 +464,8 @@ def details():
         What you were doing when the problem occurred?
         What you expected to happend?
         What actually happened?
-        ''',font=('Montserrat',10),bg="#39065D",border=0,fg="white",cursor="hand2",activebackground="#39065D",activeforeground="#39065D").place(x=300,y=60)
-        reort2=Label(root,text="CONTACT US",font=('Montserrat',15,"bold"),bg="#39065D",border=0,fg="green",cursor="hand2",activebackground="#39065D",activeforeground="#39065D").place(x=88,y=130)
+        ''',font=('Montserrat',10),bg="#501F1F",border=0,fg="white",cursor="hand2",activebackground="#501F1F",activeforeground="#501F1F").place(x=300,y=60)
+        reort2=Label(root,text="CONTACT US",font=('Montserrat',15,"bold"),bg="#501F1F",border=0,fg="green",cursor="hand2",activebackground="#501F1F",activeforeground="#501F1F").place(x=88,y=130)
         reort2=Label(root,text='''
         Mailing Address:
         krishna.kryss@gmail.com
@@ -465,7 +475,7 @@ def details():
         220179@softwarica.edu.np
         +9779811787904
         Softwarica College of IT & E-Commerce
-        ''',font=('Montserrat',12),bg="#39065D",border=0,fg="white",cursor="hand2",activebackground="#39065D",activeforeground="#39065D").place(x=0,y=150)
+        ''',font=('Montserrat',12),bg="#501F1F",border=0,fg="white",cursor="hand2",activebackground="#501F1F",activeforeground="#501F1F").place(x=0,y=150)
         txt54=StringVar()
         x=random.randint(1,100)
         txt54.set(str(x))
@@ -501,7 +511,7 @@ def details():
     root7.configure(bg="#501F1F")
 
     ##image
-    load=Image.open("trypp.png")
+    load=Image.open("image/trypp.png")
     load=load.resize((1535,800))
     render=ImageTk.PhotoImage(load)
     imgs=Label(root7,image=render)
@@ -553,10 +563,6 @@ def details():
     customer_contact_entry = Entry(customer_frame,width=20,font="Montserrat 12",bd=0,
                                     textvariable=customerContact)
     customer_contact_entry.grid(row = 0, column=3,padx=30)
-
-    # fetch=Button(customer_frame,text="Fetch Data",font=("Montserrat",9,"bold"),bg="#FFA726",activebackground="#FFA726",
-    #                         width=10)
-    # fetch.grid(row=0,column=4)
 
     #===============Menu===============
     menu_frame = Frame(root7,bd=8, bg="#501F1F")
@@ -628,11 +634,11 @@ def details():
                         font=("Montserrat Semibold", 15,),bg = "#A0522D", fg="white")
     item_title_label.pack(side=TOP,fill="x")
 
-    item_frame2 = Frame(item_frame, bg="#39065D")
+    item_frame2 = Frame(item_frame, bg="#501F1F")
     item_frame2.pack(fill=X)
 
     item_name_label = Label(item_frame2, text="Name",
-                        font=("Montserrat", 12, "bold"),bg = "#39065D", fg="white")
+                        font=("Montserrat", 12, "bold"),bg = "#501F1F", fg="white")
     item_name_label.grid(row=0,column=0)
 
     itemCategory = StringVar()
@@ -644,7 +650,7 @@ def details():
     item_name.grid(row=0,column=1,padx=10)
 
     item_rate_label = Label(item_frame2, text="Price", 
-                        font=("arial", 12, "bold"),bg = "#39065D", fg="white")
+                        font=("arial", 12, "bold"),bg = "#501F1F", fg="white")
     item_rate_label.grid(row=0,column=2,padx=40)
 
     itemRate = StringVar()
@@ -653,7 +659,7 @@ def details():
     item_rate.grid(row=0,column=3,padx=10)
 
     item_quantity_label = Label(item_frame2, text="Quantity", 
-                        font=("Montserrat", 10, "bold"),bg = "#39065D", fg="white")
+                        font=("Montserrat", 10, "bold"),bg = "#501F1F", fg="white")
     item_quantity_label.grid(row=1,column=0,padx=30,pady=15)
 
     itemQuantity = StringVar()
@@ -661,7 +667,7 @@ def details():
     item_quantity = Entry(item_frame2, font="arial 12",textvariable=itemQuantity, width=10)
     item_quantity.grid(row=1,column=1)
 
-    item_frame3 = Frame(item_frame, bg="#39065D")
+    item_frame3 = Frame(item_frame, bg="#501F1F")
     item_frame3.pack(fill=X)
 
     ##button to add item to menu
@@ -682,11 +688,11 @@ def details():
     clear_button.grid(row=0,column=3,padx=40,pady=30)
 
     #==============Order Frame=====================
-    order_frame = Frame(root7, bg="#39065D")
+    order_frame = Frame(root7, bg="#501F1F")
     order_frame.place(x=680,y=350,height=370,width=680)
 
     order_title_label = Label(order_frame, text="Your Products", 
-                        font=("Montserrat", 15, "bold"),bg = "#39065D", fg="white")
+                        font=("Montserrat", 15, "bold"),bg = "#501F1F", fg="white")
     order_title_label.pack(side=TOP,fill="x")
 
     ############# Order Tabel ###################################
@@ -723,12 +729,12 @@ def details():
 
     ##label for total price
     total_price_label = Label(order_frame, text="Total Price", 
-                        font=("Montserrat", 12, "bold"),bg = "#39065D", fg="white")
+                        font=("Montserrat", 12, "bold"),bg = "#501F1F", fg="white")
     total_price_label.pack(side=LEFT,anchor=SW,padx=20,pady=5)
 
     ##label for previous bill
     total_price_labe = Label(order_frame, text="Previous Bill", 
-                        font=("Montserrat", 12, "bold"),bg = "#39065D", fg="white")
+                        font=("Montserrat", 12, "bold"),bg = "#501F1F", fg="white")
     total_price_labe.place(x=20,y=310)
 
     ##entry for total price
@@ -756,7 +762,7 @@ def details():
     ##cancel order button
     cancel_button =Button(order_frame, text="Cancel Order",font=("Montserrat",9,"bold"),command=cancel_button_operation,width=12,bg="#FFA726",fg="black",activebackground="#FFA726")
     cancel_button.place(x=450,y=330)
-
+    #closing window
     root7.mainloop()
-    
+##calling function
 details()
